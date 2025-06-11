@@ -12,16 +12,8 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Membes Developer Documentation",
         "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
           {
             "group": "Essentials",
             "pages": [
@@ -32,12 +24,7 @@
               "essentials/navigation",
               "essentials/reusable-snippets"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
+          },
           {
             "group": "API Documentation",
             "pages": [
