@@ -18,9 +18,16 @@
           {
             "group": "API Reference",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/introduction",
+                {
+                  "group": "test",
+                  "pages": [
+                    "test/new"
+                ]
+              },
             ]
           },
+            
           {
             "group": "Endpoint Examples",
             "pages": [
