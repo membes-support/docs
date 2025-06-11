@@ -1,7 +1,8 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "membes",
+  "name": "Membes Developer Documentation
+",
   "colors": {
     "primary": "#335eea",
     "light": "#8094DD",
