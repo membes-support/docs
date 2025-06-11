@@ -1,0 +1,2372 @@
+{
+        "openapi": "3.1.0",
+        "info": {
+                "title": "api",
+                "description": "",
+                "version": "1.0.0"
+        },
+        "tags": [],
+        "paths": {
+                "/token": {
+                        "post": {
+                                "summary": "Get Access Token",
+                                "deprecated": false,
+                                "description": "The endpoint return an access token, which is a JWT token, on success. Otherwise it will return an empty json object.\n\n**BODY VARIABLES**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| orgid | number | ✔ | Organisation ID |\n| secret | string | ✔ | Private key |\n| payload | object |  |  |\n\n**RESPONSES**\n\n| Name | Type | Description |\n| --- | --- | --- |\n| accesstoken | string | Bearer token to be used in the rest of the API endpoints. |",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {}
+                                                        },
+                                                        "example": "{\n    \"orgid\":{{orgid}},\n    \"secret\":\"{{secret}}\"\n    {{payload-optional}}\n}"
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/token/validate/{tokentovalidate}": {
+                        "get": {
+                                "summary": "Validate Token",
+                                "deprecated": false,
+                                "description": "Validate a given token. If the token is validated, the token will be decoded and return as a json object.  \nThe valid property will be set accordingly (true or false).\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| valid | boolean | true or false |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "tokentovalidate",
+                                                "in": "path",
+                                                "description": "The JWT token to be validated",
+                                                "required": true,
+                                                "example": "{{tokentovalidate}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/profile/{profileid}/": {
+                        "get": {
+                                "summary": "Get Profile Detail",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "Profile ID to be retrieved",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        },
+                        "put": {
+                                "summary": "Update Profile",
+                                "deprecated": false,
+                                "description": "Update an existing profile.\n\n**BODY PARAMETERS**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| firstName | String | ✔ |  |\n| middleName | String |  |  |\n| surname | String | ✔ |  |\n| title | String |  |  |\n| previousName | String |  |  |\n| informalName | String |  |  |\n| email | email |  |  |\n| dob | date |  | Date of birth in yyyy-mm-dd format |\n| phoneWork | String |  |  |\n| phoneWorkCountryCode | String |  | Required if phoneWork exists, example: +61 |\n| phoneHome | String |  |  |\n| phoneHomeCountryCode | String |  | Required if phoneHome exists, example: +61 |\n| phoneMobile | String |  |  |\n| phoneMobileCountryCode | String |  | Required if phoneMobile exists, example: +61 |\n| faxWork | String |  |  |\n| faxWorkCountryCode | String |  | Required if faxWork exists, example: +61 |\n| fax | String |  |  |\n| faxCountryCode | String |  | Required if fax exists, example: +61 |\n| joinDate | date |  | In yyyy-mm-dd format. |\n| address1 | AddressObject |  | [See 'Add New Profile'](#5645e3bd-fe55-4a1d-ba3d-332d55677385) |\n| address2 | AddressObject |  | [See 'Add New Profile'](#5645e3bd-fe55-4a1d-ba3d-332d55677385) |\n| customfields.id | String |  | (**Multi**) Set the custom fields, example: \"customfields.1\": \"value\" |\n\n**RESPONSES**\n\nSee [Get Profile Detail endpoint](#96b75267-e3fa-4b94-927a-e34fe929ce0f)",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "ID of the profile to be updated",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "informalName": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "customfields.34": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "sourceID": {
+                                                                                "type": "integer"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "informalName",
+                                                                        "customfields.34",
+                                                                        "sourceID"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "informalName": "testing",
+                                                                "customfields.34": "Yes",
+                                                                "sourceID": 31
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/profile/": {
+                        "post": {
+                                "summary": "Add New Profile",
+                                "deprecated": false,
+                                "description": "This endpoint adds a new profile.\n\n**BODY VARIABLES**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| firstName | String | ✔ |  |\n| middleName | String |  |  |\n| surname | String | ✔ |  |\n| title | String |  |  |\n| previousName | String |  |  |\n| informalName | String |  |  |\n| email | email |  |  |\n| dob | date |  | Date of birth in yyyy-mm-dd format |\n| phoneWork | String |  |  |\n| phoneWorkCountryCode | String |  | Required if phoneWork exists, example: +61 |\n| phoneHome | String |  |  |\n| phoneHomeCountryCode | String |  | Required if phoneHome exists, example: +61 |\n| phoneMobile | String |  |  |\n| phoneMobileCountryCode | String |  | Required if phoneMobile exists, example: +61 |\n| faxWork | String |  |  |\n| faxWorkCountryCode | String |  | Required if faxWork exists, example: +61 |\n| fax | String |  |  |\n| faxCountryCode | String |  | Required if fax exists, example: +61 |\n| joinDate | date |  | In yyyy-mm-dd format. |\n| address1 | AddressObject |  | See below. |\n| address2 | AddressObject |  | See below. |\n| companyName | String |  |  |\n| customfields.id | String |  | (**Multi**) Set the custom fields, example: \"customfields.1\": \"value\" |\n\n**AddressObject**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| address1 | string | ✔ |  |\n| address2 | string |  |  |\n| address3 | string |  |  |\n| town | string |  |  |\n| postcode | string |  |  |\n| stateID | number |  | [Get State ID](#90cd4f3c-6608-4ae5-9ef2-d71d693b572a) |\n| countryID | number |  | [Get Country ID](#90cd4f3c-6608-4ae5-9ef2-d71d693b572a) |\n| isPrimary | boolean |  | 1 |\n\n**RESPONSES**\n\nSee [Get Profile Detail endpoint](#96b75267-e3fa-4b94-927a-e34fe929ce0f)",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "firstName": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "surname": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "email": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "sourceID": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "sourceEntity": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "customfields.34": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "address1": {
+                                                                                "type": "object",
+                                                                                "properties": {
+                                                                                        "address1": {
+                                                                                                "type": "string"
+                                                                                        },
+                                                                                        "town": {
+                                                                                                "type": "string"
+                                                                                        },
+                                                                                        "postcode": {
+                                                                                                "type": "string"
+                                                                                        },
+                                                                                        "stateid": {
+                                                                                                "type": "integer"
+                                                                                        },
+                                                                                        "countryid": {
+                                                                                                "type": "integer"
+                                                                                        }
+                                                                                },
+                                                                                "required": [
+                                                                                        "address1",
+                                                                                        "town",
+                                                                                        "postcode",
+                                                                                        "stateid",
+                                                                                        "countryid"
+                                                                                ]
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "firstName",
+                                                                        "surname",
+                                                                        "email",
+                                                                        "sourceID",
+                                                                        "sourceEntity",
+                                                                        "customfields.34",
+                                                                        "address1"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "firstName": "John1",
+                                                                "surname": "Smith1",
+                                                                "email": "johnsmith@membes-ams.com",
+                                                                "sourceID": 311,
+                                                                "sourceEntity": "jodi1",
+                                                                "customfields.34": "No",
+                                                                "address1": {
+                                                                        "address1": "123 Street",
+                                                                        "town": "Glen",
+                                                                        "postcode": "1234",
+                                                                        "stateid": 1,
+                                                                        "countryid": 1
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/profile/{profileid}/interaction": {
+                        "post": {
+                                "summary": "Add Profile Interaction",
+                                "deprecated": false,
+                                "description": "Add interaction records to a profile.\n\n**ProfileInteractionObject**\n\n| Name | Type | Required |\n| --- | --- | --- |\n| title | string | Title of the Interaction |\n| description | string | Description of the interaction |\n| typeid | number | Type of interaction:  <br>Contact Log = 1  <br>Event Registration = 2  <br>Email Sent = 3  <br>SMS Sent = 4  <br>Membership = 5 |\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| status | boolean | true or false |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "The ID of profile to receive the interaction records.",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {}
+                                                        },
+                                                        "example": "[\n    {{ProfileInteractionObject}}\n]"
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/profile/{profileid}/interaction/{typeid}/": {
+                        "post": {
+                                "summary": "Get Profile Interaction",
+                                "deprecated": false,
+                                "description": "Get interaction records for a profile.\n\n| Name | Type | Required |\n| --- | --- | --- |\n| title | string | Title of the Interaction |\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"assignedTo\": \"\",\n            \"profileid\": 1,\n            \"typeid\": 5,\n            \"invoiceID\": \"\",\n            \"actionComplete\": 0,\n            \"loggedBy\": 0,\n            \"ref2\": \"\",\n            \"id\": 11822,\n            \"ref1\": \"\",\n            \"sentContent\": \"\",\n            \"actionBy\": \"\",\n            \"loggedDate\": \"February, 23 2024 11:31:13 +1100\",\n            \"actionDate\": \"\",\n            \"action\": \"\",\n            \"title\": \" Membership Lapsed \",\n            \"description\": \"Membership Status Updated to OnLapsed Status for this Membership Type.\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "The ID of the profile",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "typeid",
+                                                "in": "path",
+                                                "description": "The interaction type ID",
+                                                "required": true,
+                                                "example": "{{typeid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "title": {
+                                                                                "type": "string"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "title"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "title": "Membership Lapsed"
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/profile/{profileid}/events": {
+                        "get": {
+                                "summary": "Get Events of a Profile (last 12 months)",
+                                "deprecated": false,
+                                "description": "Get a list of events (past 12 months) for a user.\n\n**RESPONSES**\n\nEach event in the array contains the following detail:\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| attended | boolean | Indicate attendance |\n| eventLabel | string | The name of the event |\n| confirmed | number | Indicate confirmation of event subscription |\n| eventID | number | The id of the event |\n| paid | boolean | Indicate if paid |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "The profile ID of the interactions to be retrieved.",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/profile/search": {
+                        "post": {
+                                "summary": "Search Profile",
+                                "deprecated": false,
+                                "description": "Search for profiles that matches the search criteria. Profile can be search base on either:\n\n- email\n    \n- radius from a given location\n    \n- custom field\n    \n\nOnly one of the search criteria will be used (if more than 1 criteria are given, the rest will be ignored).\n\n**BODY PARAMETERS**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| email | email |  | The email to search. |\n| typeID | number |  | To filter the search to only individual (1) or organisation (2). Only with with email search. |\n| radius | radiusObject |  | The radius detail to search. |\n| customFields | customfieldObject |  | The custom field detail to search. |\n\n**RadiusObjet**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| location | string | ✔ | A name to establish the radius focal point. |\n| radius | number | ✔ | The radius from the focal point to search. |\n| count | number | ✔ | Number of result required. |\n\n**CustomfieldObject**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| id | number | ✔ | The custom field id to search. |\n| value | string | ✔ | The custom field value to search. |\n\n**RESPONSES**\n\nAn array of profile objects that match the criteria. Each object contain the following detail:\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| profilenumber | string | Profile number |\n| informalName | string | Informal name |\n| previousName | string | Previous name |\n| surname | string | Surname |\n| dob | string | Date of birth |\n| companyName | string | Company name |\n| firstName | string | First name |\n| id | number | Profile unique ID |\n| middleName | string | Middle name |\n| membershippaidthrough | string | The profile membership paid through date |\n| email | email | emal |",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {}
+                                                        },
+                                                        "example": "{\n    \"email\": \"{{emailtosearch}}\",\n    \"typeID\": 1,\n    \"radius\": {{RadiusObject}},\n    \"customFields\": {{CustomfieldObject}}\n\n}"
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/events/{eventid}": {
+                        "get": {
+                                "summary": "Get an Event",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve an event detail by its ID.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"memberOnly\": 0,\n        \"cpdPoints\": \"\",\n        \"registrationOpenFrom\": \"\",\n        \"typeID\": 1,\n        \"requiresRegistration\": 1,\n        \"timeEnd\": \"\",\n        \"sectionPostText\": \"\",\n        \"pageRegistrationsFull\": \"\",\n        \"code\": \"NC2\",\n        \"dspEventsCalendar\": 1,\n        \"sectionPreText\": \"\",\n        \"cpdActivityIDs\": \"\",\n        \"accountTrackingName2\": \"Category Two\",\n        \"maxAttendants\": 100,\n        \"orgID\": 1,\n        \"timezone\": \"\",\n        \"contactEmail\": \"\",\n        \"promoImage\": \"\",\n        \"templateid\": \"\",\n        \"accountTracking2\": \"0\",\n        \"accountCode\": \"260\",\n        \"attachmentFile\": \"\",\n        \"description_more\": \"\",\n        \"accountTrackingName1\": \"State Tracking\",\n        \"tradePrice\": \"\",\n        \"workshopPostText\": \"\",\n        \"contentCategoryHelper\": \"\",\n        \"id\": 34,\n        \"socialFunctionPreText\": \"\",\n        \"cpdActivityID\": 3,\n        \"externalRegistrationURL\": \"\",\n        \"website\": \"\",\n        \"homePageTeaser\": 1,\n        \"pricingOptionIDs\": \"2,4,5\",\n        \"workshopPreText\": \"\",\n        \"title\": \"National Conference 2\",\n        \"registrationOpenTill\": \"\",\n        \"confirmedOnRegIf\": \"always\",\n        \"authID\": \"\",\n        \"contactName\": \"\",\n        \"registrationType\": \"internal\",\n        \"cpdAcivityID\": 0,\n        \"attachmentText\": \"\",\n        \"dateStart\": \"September, 30 2019 00:00:00 +1000\",\n        \"priceAddGST\": 1,\n        \"topic\": \"National Conference 2\",\n        \"zoomID\": \"\",\n        \"stateID\": 3217,\n        \"groupID\": 0,\n        \"registrationOpen\": 1,\n        \"requestDietary\": 0,\n        \"description\": \"National Conference 2\",\n        \"descriptionMore\": \"\",\n        \"venue\": \"\",\n        \"dateEnd\": \"\",\n        \"ccRegNotificationTo\": \"\",\n        \"zoomAttendanceThreshold\": \"\",\n        \"websiteText\": \"\",\n        \"cpdSource\": \"\",\n        \"tradeRegistrations\": 0,\n        \"contactPhone\": \"\",\n        \"customFields_profile\": \"47,42\",\n        \"socialFunctionPostText\": \"\",\n        \"cpdAutoLog\": 0,\n        \"accountTracking1\": \"0\",\n        \"customFields_event\": \"\",\n        \"timeStart\": \"\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "eventid",
+                                                "in": "path",
+                                                "description": "ID of the event to retrieve",
+                                                "required": true,
+                                                "example": "{{eventid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/events/{eventid}/registration_type": {
+                        "get": {
+                                "summary": "Get Event Registration Type",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve event's registration types by eventID.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"registration_type\": [\n            {\n                \"id\": 142,\n                \"eventID\": 123,\n                \"title\": \"registration type 1\",\n                \"description\": \"registration type 1\"\n            },\n            {\n                \"id\": 143,\n                \"eventID\": 123,\n                \"title\": \"registration type 2\",\n                \"description\": \"registration type 2\"\n            }\n        ],\n        \"success\": true\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "eventid",
+                                                "in": "path",
+                                                "description": "ID of the event to retrieve",
+                                                "required": true,
+                                                "example": "{{eventid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/events": {
+                        "post": {
+                                "summary": "create new event",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve an event detail by its ID.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"memberOnly\": 0,\n        \"cpdPoints\": \"\",\n        \"registrationOpenFrom\": \"\",\n        \"typeID\": 1,\n        \"requiresRegistration\": 1,\n        \"timeEnd\": \"\",\n        \"sectionPostText\": \"\",\n        \"pageRegistrationsFull\": \"\",\n        \"code\": \"NC2\",\n        \"dspEventsCalendar\": 1,\n        \"sectionPreText\": \"\",\n        \"cpdActivityIDs\": \"\",\n        \"accountTrackingName2\": \"Category Two\",\n        \"maxAttendants\": 100,\n        \"orgID\": 1,\n        \"timezone\": \"\",\n        \"contactEmail\": \"\",\n        \"promoImage\": \"\",\n        \"templateid\": \"\",\n        \"accountTracking2\": \"0\",\n        \"accountCode\": \"260\",\n        \"attachmentFile\": \"\",\n        \"description_more\": \"\",\n        \"accountTrackingName1\": \"State Tracking\",\n        \"tradePrice\": \"\",\n        \"workshopPostText\": \"\",\n        \"contentCategoryHelper\": \"\",\n        \"id\": 34,\n        \"socialFunctionPreText\": \"\",\n        \"cpdActivityID\": 3,\n        \"externalRegistrationURL\": \"\",\n        \"website\": \"\",\n        \"homePageTeaser\": 1,\n        \"pricingOptionIDs\": \"2,4,5\",\n        \"workshopPreText\": \"\",\n        \"title\": \"National Conference 2\",\n        \"registrationOpenTill\": \"\",\n        \"confirmedOnRegIf\": \"always\",\n        \"authID\": \"\",\n        \"contactName\": \"\",\n        \"registrationType\": \"internal\",\n        \"cpdAcivityID\": 0,\n        \"attachmentText\": \"\",\n        \"dateStart\": \"September, 30 2019 00:00:00 +1000\",\n        \"priceAddGST\": 1,\n        \"topic\": \"National Conference 2\",\n        \"zoomID\": \"\",\n        \"stateID\": 3217,\n        \"groupID\": 0,\n        \"registrationOpen\": 1,\n        \"requestDietary\": 0,\n        \"description\": \"National Conference 2\",\n        \"descriptionMore\": \"\",\n        \"venue\": \"\",\n        \"dateEnd\": \"\",\n        \"ccRegNotificationTo\": \"\",\n        \"zoomAttendanceThreshold\": \"\",\n        \"websiteText\": \"\",\n        \"cpdSource\": \"\",\n        \"tradeRegistrations\": 0,\n        \"contactPhone\": \"\",\n        \"customFields_profile\": \"47,42\",\n        \"socialFunctionPostText\": \"\",\n        \"cpdAutoLog\": 0,\n        \"accountTracking1\": \"0\",\n        \"customFields_event\": \"\",\n        \"timeStart\": \"\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "event_name": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "start_date": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "end_date": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "venue": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "state": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "country": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "timezone": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "display_in_calendar": {
+                                                                                "type": "boolean"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "event_name",
+                                                                        "start_date",
+                                                                        "end_date",
+                                                                        "venue",
+                                                                        "state",
+                                                                        "country",
+                                                                        "timezone",
+                                                                        "display_in_calendar"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "event_name": "Event by API 4",
+                                                                "start_date": "2025-12-01 11:00:00",
+                                                                "end_date": "2025-12-01 16:59:59",
+                                                                "venue": "online",
+                                                                "state": "Victoria",
+                                                                "country": "Australia",
+                                                                "timezone": "Australia/Melbourne",
+                                                                "display_in_calendar": true
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/events/registrationtype": {
+                        "post": {
+                                "summary": "add registration type for an event",
+                                "deprecated": false,
+                                "description": "This endpoint will add registration types for an event\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"registration_type\": [\n            {\n                \"id\": 147,\n                \"eventID\": 123,\n                \"title\": \"registration type 10\",\n                \"description\": \"registration type 10 desc\"\n            },\n            {\n                \"id\": 148,\n                \"eventID\": 123,\n                \"title\": \"registration type 11\",\n                \"description\": \"registration type 11 desc\"\n            }\n        ],\n        \"success\": true\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "eventID": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "registration_type": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                        "type": "object",
+                                                                                        "properties": {
+                                                                                                "title": {
+                                                                                                        "type": "string"
+                                                                                                },
+                                                                                                "description": {
+                                                                                                        "type": "string"
+                                                                                                }
+                                                                                        },
+                                                                                        "required": [
+                                                                                                "title",
+                                                                                                "description"
+                                                                                        ]
+                                                                                }
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "eventID",
+                                                                        "registration_type"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "eventID": 123,
+                                                                "registration_type": [
+                                                                        {
+                                                                                "title": "registration type 10",
+                                                                                "description": "registration type 10 desc"
+                                                                        },
+                                                                        {
+                                                                                "title": "registration type 11",
+                                                                                "description": "registration type 11 desc"
+                                                                        }
+                                                                ]
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/events/register": {
+                        "post": {
+                                "summary": "register user to event",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve an event detail by its ID.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"memberOnly\": 0,\n        \"cpdPoints\": \"\",\n        \"registrationOpenFrom\": \"\",\n        \"typeID\": 1,\n        \"requiresRegistration\": 1,\n        \"timeEnd\": \"\",\n        \"sectionPostText\": \"\",\n        \"pageRegistrationsFull\": \"\",\n        \"code\": \"NC2\",\n        \"dspEventsCalendar\": 1,\n        \"sectionPreText\": \"\",\n        \"cpdActivityIDs\": \"\",\n        \"accountTrackingName2\": \"Category Two\",\n        \"maxAttendants\": 100,\n        \"orgID\": 1,\n        \"timezone\": \"\",\n        \"contactEmail\": \"\",\n        \"promoImage\": \"\",\n        \"templateid\": \"\",\n        \"accountTracking2\": \"0\",\n        \"accountCode\": \"260\",\n        \"attachmentFile\": \"\",\n        \"description_more\": \"\",\n        \"accountTrackingName1\": \"State Tracking\",\n        \"tradePrice\": \"\",\n        \"workshopPostText\": \"\",\n        \"contentCategoryHelper\": \"\",\n        \"id\": 34,\n        \"socialFunctionPreText\": \"\",\n        \"cpdActivityID\": 3,\n        \"externalRegistrationURL\": \"\",\n        \"website\": \"\",\n        \"homePageTeaser\": 1,\n        \"pricingOptionIDs\": \"2,4,5\",\n        \"workshopPreText\": \"\",\n        \"title\": \"National Conference 2\",\n        \"registrationOpenTill\": \"\",\n        \"confirmedOnRegIf\": \"always\",\n        \"authID\": \"\",\n        \"contactName\": \"\",\n        \"registrationType\": \"internal\",\n        \"cpdAcivityID\": 0,\n        \"attachmentText\": \"\",\n        \"dateStart\": \"September, 30 2019 00:00:00 +1000\",\n        \"priceAddGST\": 1,\n        \"topic\": \"National Conference 2\",\n        \"zoomID\": \"\",\n        \"stateID\": 3217,\n        \"groupID\": 0,\n        \"registrationOpen\": 1,\n        \"requestDietary\": 0,\n        \"description\": \"National Conference 2\",\n        \"descriptionMore\": \"\",\n        \"venue\": \"\",\n        \"dateEnd\": \"\",\n        \"ccRegNotificationTo\": \"\",\n        \"zoomAttendanceThreshold\": \"\",\n        \"websiteText\": \"\",\n        \"cpdSource\": \"\",\n        \"tradeRegistrations\": 0,\n        \"contactPhone\": \"\",\n        \"customFields_profile\": \"47,42\",\n        \"socialFunctionPostText\": \"\",\n        \"cpdAutoLog\": 0,\n        \"accountTracking1\": \"0\",\n        \"customFields_event\": \"\",\n        \"timeStart\": \"\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "fwreinit",
+                                                "in": "query",
+                                                "description": "",
+                                                "required": false,
+                                                "example": "1",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "event_id": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "profile_id": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "registration_type": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                        "type": "integer"
+                                                                                }
+                                                                        },
+                                                                        "payment_status": {
+                                                                                "type": "integer"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "event_id",
+                                                                        "profile_id",
+                                                                        "registration_type",
+                                                                        "payment_status"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "event_id": 123,
+                                                                "profile_id": 1,
+                                                                "registration_type": [
+                                                                        148,
+                                                                        149
+                                                                ],
+                                                                "payment_status": 0
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        },
+                        "put": {
+                                "summary": "update user event registration",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve an event detail by its ID.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"memberOnly\": 0,\n        \"cpdPoints\": \"\",\n        \"registrationOpenFrom\": \"\",\n        \"typeID\": 1,\n        \"requiresRegistration\": 1,\n        \"timeEnd\": \"\",\n        \"sectionPostText\": \"\",\n        \"pageRegistrationsFull\": \"\",\n        \"code\": \"NC2\",\n        \"dspEventsCalendar\": 1,\n        \"sectionPreText\": \"\",\n        \"cpdActivityIDs\": \"\",\n        \"accountTrackingName2\": \"Category Two\",\n        \"maxAttendants\": 100,\n        \"orgID\": 1,\n        \"timezone\": \"\",\n        \"contactEmail\": \"\",\n        \"promoImage\": \"\",\n        \"templateid\": \"\",\n        \"accountTracking2\": \"0\",\n        \"accountCode\": \"260\",\n        \"attachmentFile\": \"\",\n        \"description_more\": \"\",\n        \"accountTrackingName1\": \"State Tracking\",\n        \"tradePrice\": \"\",\n        \"workshopPostText\": \"\",\n        \"contentCategoryHelper\": \"\",\n        \"id\": 34,\n        \"socialFunctionPreText\": \"\",\n        \"cpdActivityID\": 3,\n        \"externalRegistrationURL\": \"\",\n        \"website\": \"\",\n        \"homePageTeaser\": 1,\n        \"pricingOptionIDs\": \"2,4,5\",\n        \"workshopPreText\": \"\",\n        \"title\": \"National Conference 2\",\n        \"registrationOpenTill\": \"\",\n        \"confirmedOnRegIf\": \"always\",\n        \"authID\": \"\",\n        \"contactName\": \"\",\n        \"registrationType\": \"internal\",\n        \"cpdAcivityID\": 0,\n        \"attachmentText\": \"\",\n        \"dateStart\": \"September, 30 2019 00:00:00 +1000\",\n        \"priceAddGST\": 1,\n        \"topic\": \"National Conference 2\",\n        \"zoomID\": \"\",\n        \"stateID\": 3217,\n        \"groupID\": 0,\n        \"registrationOpen\": 1,\n        \"requestDietary\": 0,\n        \"description\": \"National Conference 2\",\n        \"descriptionMore\": \"\",\n        \"venue\": \"\",\n        \"dateEnd\": \"\",\n        \"ccRegNotificationTo\": \"\",\n        \"zoomAttendanceThreshold\": \"\",\n        \"websiteText\": \"\",\n        \"cpdSource\": \"\",\n        \"tradeRegistrations\": 0,\n        \"contactPhone\": \"\",\n        \"customFields_profile\": \"47,42\",\n        \"socialFunctionPostText\": \"\",\n        \"cpdAutoLog\": 0,\n        \"accountTracking1\": \"0\",\n        \"customFields_event\": \"\",\n        \"timeStart\": \"\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "fwreinit",
+                                                "in": "query",
+                                                "description": "",
+                                                "required": false,
+                                                "example": "1",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "registrant_id": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "profile_id": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "event_id": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "registration_type": {
+                                                                                "type": "array",
+                                                                                "items": {
+                                                                                        "type": "integer"
+                                                                                }
+                                                                        },
+                                                                        "status": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "payment_status": {
+                                                                                "type": "integer"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "registrant_id",
+                                                                        "profile_id",
+                                                                        "event_id",
+                                                                        "registration_type",
+                                                                        "status",
+                                                                        "payment_status"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "registrant_id": 913,
+                                                                "profile_id": 1,
+                                                                "event_id": 123,
+                                                                "registration_type": [
+                                                                        149,
+                                                                        148
+                                                                ],
+                                                                "status": "registered",
+                                                                "payment_status": 1
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/eventsbydaterange/{startdate}/{enddate}": {
+                        "get": {
+                                "summary": "Get a List of Events by Date Range",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve a list of events within a given date range.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"memberOnly\": 0,\n            \"cpdPoints\": \"\",\n            \"registrationOpenFrom\": \"\",\n            \"typeID\": 1,\n            \"requiresRegistration\": 1,\n            \"timeEnd\": \"\",\n            \"sectionPostText\": \"\",\n            \"pageRegistrationsFull\": \"\",\n            \"code\": \"\",\n            \"dspEventsCalendar\": 1,\n            \"sectionPreText\": \"\",\n            \"cpdActivityIDs\": \"\",\n            \"accountTrackingName2\": \"\",\n            \"maxAttendants\": \"\",\n            \"orgID\": 1,\n            \"timezone\": \"Australia/Melbourne\",\n            \"contactEmail\": \"\",\n            \"promoImage\": \"\",\n            \"templateid\": \"\",\n            \"accountTracking2\": \"\",\n            \"accountCode\": \"\",\n            \"attachmentFile\": \"\",\n            \"description_more\": \"\",\n            \"accountTrackingName1\": \"\",\n            \"tradePrice\": \"\",\n            \"workshopPostText\": \"\",\n            \"contentCategoryHelper\": \"\",\n            \"id\": 105,\n            \"socialFunctionPreText\": \"\",\n            \"cpdActivityID\": 0,\n            \"externalRegistrationURL\": \"\",\n            \"website\": \"\",\n            \"homePageTeaser\": 1,\n            \"pricingOptionIDs\": \"2,4\",\n            \"workshopPreText\": \"\",\n            \"title\": \"New event with timezone\",\n            \"registrationOpenTill\": \"\",\n            \"confirmedOnRegIf\": \"onpayment\",\n            \"authID\": \"\",\n            \"contactName\": \"\",\n            \"registrationType\": \"internal\",\n            \"cpdAcivityID\": 0,\n            \"attachmentText\": \"\",\n            \"dateStart\": \"March, 31 2022 10:35:00 +1100\",\n            \"priceAddGST\": 1,\n            \"topic\": \"\",\n            \"zoomID\": \"\",\n            \"stateID\": 0,\n            \"groupID\": 0,\n            \"registrationOpen\": 1,\n            \"requestDietary\": 0,\n            \"description\": \"\",\n            \"descriptionMore\": \"\",\n            \"venue\": \"\",\n            \"dateEnd\": \"\",\n            \"ccRegNotificationTo\": \"\",\n            \"zoomAttendanceThreshold\": \"\",\n            \"websiteText\": \"\",\n            \"cpdSource\": \"\",\n            \"tradeRegistrations\": 0,\n            \"contactPhone\": \"\",\n            \"customFields_profile\": \"\",\n            \"socialFunctionPostText\": \"\",\n            \"cpdAutoLog\": 0,\n            \"accountTracking1\": \"\",\n            \"customFields_event\": \"\",\n            \"timeStart\": \"\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "startdate",
+                                                "in": "path",
+                                                "description": "Start date in yyyy-mm-dd format.",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "enddate",
+                                                "in": "path",
+                                                "description": "End date in yyyy-mm-dd format.",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/groups/events/{groupid}": {
+                        "get": {
+                                "summary": "Get a list of Event by Group",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve all events that are related to a particular group.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"memberOnly\": 0,\n            \"cpdPoints\": \"\",\n            \"registrationOpenFrom\": \"\",\n            \"typeID\": 3,\n            \"requiresRegistration\": 1,\n            \"timeEnd\": \"\",\n            \"sectionPostText\": \"\",\n            \"pageRegistrationsFull\": \"\",\n            \"code\": \"\",\n            \"dspEventsCalendar\": 1,\n            \"sectionPreText\": \"\",\n            \"cpdActivityIDs\": \"\",\n            \"accountTrackingName2\": \"\",\n            \"maxAttendants\": \"\",\n            \"orgID\": 1,\n            \"timezone\": \"\",\n            \"contactEmail\": \"\",\n            \"promoImage\": \"\",\n            \"templateid\": \"\",\n            \"accountTracking2\": \"\",\n            \"accountCode\": \"\",\n            \"attachmentFile\": \"\",\n            \"description_more\": \"\",\n            \"accountTrackingName1\": \"\",\n            \"tradePrice\": \"\",\n            \"workshopPostText\": \"\",\n            \"contentCategoryHelper\": \"\",\n            \"id\": 101,\n            \"socialFunctionPreText\": \"\",\n            \"cpdActivityID\": 0,\n            \"externalRegistrationURL\": \"\",\n            \"website\": \"\",\n            \"homePageTeaser\": 1,\n            \"pricingOptionIDs\": \"\",\n            \"workshopPreText\": \"\",\n            \"title\": \"another with no desscription\",\n            \"registrationOpenTill\": \"\",\n            \"confirmedOnRegIf\": \"onpayment\",\n            \"authID\": \"\",\n            \"contactName\": \"\",\n            \"registrationType\": \"internal\",\n            \"cpdAcivityID\": 0,\n            \"attachmentText\": \"\",\n            \"dateStart\": \"December, 30 2021 00:00:00 +1100\",\n            \"priceAddGST\": 1,\n            \"topic\": \"\",\n            \"zoomID\": \"\",\n            \"stateID\": 0,\n            \"groupID\": 2,\n            \"registrationOpen\": 1,\n            \"requestDietary\": 0,\n            \"description\": \"hello\",\n            \"descriptionMore\": \"\",\n            \"venue\": \"\",\n            \"dateEnd\": \"December, 30 2021 00:00:00 +1100\",\n            \"ccRegNotificationTo\": \"\",\n            \"zoomAttendanceThreshold\": \"\",\n            \"websiteText\": \"\",\n            \"cpdSource\": \"\",\n            \"tradeRegistrations\": 0,\n            \"contactPhone\": \"\",\n            \"customFields_profile\": \"\",\n            \"socialFunctionPostText\": \"\",\n            \"cpdAutoLog\": 0,\n            \"accountTracking1\": \"\",\n            \"customFields_event\": \"\",\n            \"timeStart\": \"\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "groupid",
+                                                "in": "path",
+                                                "description": "Only event belonging to this group will be retrieved.",
+                                                "required": true,
+                                                "example": "{{groupid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/groups/topics/{groupid}": {
+                        "get": {
+                                "summary": "Get a list of Forum Topics by Group",
+                                "deprecated": false,
+                                "description": "This endpoint retrieve a list of forum topics which are related to a particular group.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"profileid\": 1,\n            \"categoryid\": \"\",\n            \"enabled\": 1,\n            \"attachment\": \"\",\n            \"groupID\": 1,\n            \"id\": 3,\n            \"orgID\": 1,\n            \"title\": \"test 3\",\n            \"tstamp\": \"June, 29 2015 20:01:58 +1000\",\n            \"body\": \"line 1\\r\\nline 2\\r\\n\\r\\nline 4\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "groupid",
+                                                "in": "path",
+                                                "description": "Only forum topics of this group will be retrieved.",
+                                                "required": true,
+                                                "example": "{{groupid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/groups/replies/{groupid}": {
+                        "get": {
+                                "summary": "Get a List of Topic Replies by Group",
+                                "deprecated": false,
+                                "description": "This endpoint will retrieve a list of forum replies related to a particular group.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"profileid\": 190,\n            \"enabled\": 1,\n            \"attachment\": \"\",\n            \"id\": 1,\n            \"orgID\": 1,\n            \"topicid\": 2,\n            \"tstamp\": \"March, 16 2016 16:57:09 +1100\",\n            \"body\": \"test\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "groupid",
+                                                "in": "path",
+                                                "description": "Only forum replies to this group will be retrieved.",
+                                                "required": true,
+                                                "example": "{{groupid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/forum/{topicid}": {
+                        "get": {
+                                "summary": "Get a Forum Topic",
+                                "deprecated": false,
+                                "description": "This endpoint retrieve the detail of a forum topic.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"profileid\": 1,\n        \"categoryid\": \"\",\n        \"enabled\": 1,\n        \"attachment\": \"\",\n        \"groupID\": 0,\n        \"id\": 4,\n        \"orgID\": 1,\n        \"title\": \"test 4\",\n        \"tstamp\": \"June, 29 2015 20:12:22 +1000\",\n        \"body\": \"line 1\\r\\nline 2\\r\\n\\r\\nline 4\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "topicid",
+                                                "in": "path",
+                                                "description": "ID of the topic to be retrieved",
+                                                "required": true,
+                                                "example": "{{topicid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/forum": {
+                        "get": {
+                                "summary": "Get a List of Forum Topic",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list of active forum topics (Max 300 latest topics).\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"profileid\": 1,\n            \"categoryid\": 7,\n            \"enabled\": 1,\n            \"attachment\": \"\",\n            \"groupID\": 0,\n            \"id\": 32,\n            \"orgID\": 1,\n            \"title\": \"topic title123\",\n            \"tstamp\": \"July, 19 2021 15:12:10 +1000\",\n            \"body\": \"topic body\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        },
+                        "post": {
+                                "summary": "Add a New Forum Topic",
+                                "deprecated": false,
+                                "description": "This endpoint adds a new forum topic.\n\n**BODY PARAMETERS**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| categoryid | number |  | [Get category ID](#7c9ebabc-6555-4aae-93d0-97c827fa8cfa) |\n| title | string | ✔ | Title of the forum topic. |\n| body | string | ✔ | Body of the forum topic. |\n| enabled | boolean | ✔ | true/false to enable or disable the forum topic. |\n| profileid | number |  | Owner of the topic. |\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"profileid\": 1,\n        \"categoryid\": 7,\n        \"enabled\": 1,\n        \"attachment\": \"\",\n        \"groupID\": 0,\n        \"id\": 33,\n        \"orgID\": 1,\n        \"title\": \"topic title\",\n        \"tstamp\": \"September, 27 2022 11:26:25 +1000\",\n        \"body\": \"topic body\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "categoryid": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "title": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "body": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "enabled": {
+                                                                                "type": "boolean"
+                                                                        },
+                                                                        "profileid": {
+                                                                                "type": "integer"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "categoryid",
+                                                                        "title",
+                                                                        "body",
+                                                                        "enabled",
+                                                                        "profileid"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "categoryid": 7,
+                                                                "title": "topic title",
+                                                                "body": "topic body",
+                                                                "enabled": true,
+                                                                "profileid": 1
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/forum/{topicid}/reply": {
+                        "get": {
+                                "summary": "Get a List of Forum Topic Replies",
+                                "deprecated": false,
+                                "description": "this endpoint retrieves the replies for a particular forum topic.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"profileid\": 1,\n            \"enabled\": 1,\n            \"attachment\": \"\",\n            \"id\": 44,\n            \"orgID\": 1,\n            \"topicid\": 4,\n            \"tstamp\": \"September, 13 2021 13:22:16 +1000\",\n            \"body\": \"string\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "topicid",
+                                                "in": "path",
+                                                "description": "Forum replies for this topic will be retrieved.",
+                                                "required": true,
+                                                "example": "{{topicid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        },
+                        "post": {
+                                "summary": "Add Reply to a Forum Topic",
+                                "deprecated": false,
+                                "description": "This endpoint adds a reply to a forum topic.\n\n**BODY PARAMETERS**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| body | string | ✔ | Body of the forum topic. |\n| enabled | boolean | ✔ | true/false to enable or disable the forum topic. |\n| profileid | number |  | Owner of the topic. |\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"profileid\": 1,\n        \"enabled\": 1,\n        \"attachment\": \"\",\n        \"id\": 45,\n        \"orgID\": 1,\n        \"topicid\": 4,\n        \"tstamp\": \"September, 27 2022 11:27:56 +1000\",\n        \"body\": \"string\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "topicid",
+                                                "in": "path",
+                                                "description": "ID of a topic for which the reply is to  be added",
+                                                "required": true,
+                                                "example": "{{topicid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "body": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "enabled": {
+                                                                                "type": "boolean"
+                                                                        },
+                                                                        "profileid": {
+                                                                                "type": "integer"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "body",
+                                                                        "enabled",
+                                                                        "profileid"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "body": "string",
+                                                                "enabled": true,
+                                                                "profileid": 1
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/forumcategories": {
+                        "get": {
+                                "summary": "Get Forum Categories",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves the forum categories for the organisation.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"id\": 2,\n            \"orgID\": 1,\n            \"title\": \"Professional Discussion\",\n            \"description\": \"Only for Professionals.\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/news/{newsid}": {
+                        "get": {
+                                "summary": "Get News",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a news detail.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"attachmentText\": \"\",\n        \"introduction\": \"cappucin0\",\n        \"pageImage\": \"\",\n        \"urlText\": \"\",\n        \"dateExpiry\": \"November, 05 2024 00:00:00 +1100\",\n        \"datePublish\": \"April, 27 2020 00:00:00 +1000\",\n        \"attachment\": \"\",\n        \"url\": \"http://localhost:8888/news-item//\",\n        \"introImage\": \"\",\n        \"id\": 21,\n        \"orgID\": 1,\n        \"pageBody\": \"\",\n        \"title\": \"new no slack title\",\n        \"body\": \"\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "newsid",
+                                                "in": "path",
+                                                "description": "ID of the news to be retrieved.",
+                                                "required": true,
+                                                "example": "{{newsid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        },
+                        "post": {
+                                "summary": "Update a News Item",
+                                "deprecated": false,
+                                "description": "This endpoint updates an existing news. Please refer to the [Add News](#9a80b6df-ea81-4786-900c-cbf8f05d6472) for the body parameters.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"attachmentText\": \"\",\n            \"introduction\": \"Hello World\",\n            \"pageImage\": \"\",\n            \"urlText\": \"\",\n            \"dateExpiry\": \"November, 05 2024 00:00:00 +1100\",\n            \"datePublish\": \"April, 27 2020 00:00:00 +1000\",\n            \"attachment\": \"\",\n            \"url\": \"http://localhost:8888/news-item//\",\n            \"introImage\": \"\",\n            \"id\": 21,\n            \"orgID\": 1,\n            \"pageBody\": \"\",\n            \"title\": \"new no slack title\",\n            \"body\": \"\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "newsid",
+                                                "in": "path",
+                                                "description": "ID of the news to be updated.",
+                                                "required": true,
+                                                "example": "{{newsid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "introduction": {
+                                                                                "type": "string"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "introduction"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "introduction": "Hello World"
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/news/published/{newscount}": {
+                        "get": {
+                                "summary": "Get published News",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list of published news.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"attachmentText\": \"\",\n            \"introduction\": \"This is the new news introduction\",\n            \"pageImage\": \"\",\n            \"urlText\": \"\",\n            \"dateExpiry\": \"July, 01 2023 00:00:00 +1000\",\n            \"datePublish\": \"July, 01 2021 00:00:00 +1000\",\n            \"attachment\": \"\",\n            \"url\": \"\",\n            \"introImage\": \"\",\n            \"id\": 27,\n            \"orgID\": 1,\n            \"pageBody\": \"\",\n            \"title\": \"new news\",\n            \"body\": \"\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "newscount",
+                                                "in": "path",
+                                                "description": "Maximum number if news returned.",
+                                                "required": true,
+                                                "example": "{{newscount}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/news/all/{newscount}": {
+                        "get": {
+                                "summary": "Get All News",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list of all news.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"attachmentText\": \"\",\n            \"introduction\": \"\",\n            \"pageImage\": \"\",\n            \"urlText\": \"\",\n            \"dateExpiry\": \"August, 30 2021 00:00:00 +1000\",\n            \"datePublish\": \"August, 10 2021 00:00:00 +1000\",\n            \"attachment\": \"\",\n            \"url\": \"\",\n            \"introImage\": \"\",\n            \"id\": 29,\n            \"orgID\": 1,\n            \"pageBody\": \"\",\n            \"title\": \"news item 20210810-1\",\n            \"body\": \"\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "newscount",
+                                                "in": "path",
+                                                "description": "Maximum number of news retrieved.",
+                                                "required": true,
+                                                "example": "{{newscount}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/news": {
+                        "post": {
+                                "summary": "Add a News Item",
+                                "deprecated": false,
+                                "description": "This endpoint creates a news.\n\n**BODY PARAMETERS**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| title | string | ✔ | Title of the news. |\n| introduction | string |  | Introduction of the news. |\n| pageBody | string |  | Main page of the news. |\n| datePublish | date |  | Date to display the news. |\n| dateExpiry | date |  | Date to hide the news. |\n| url | string |  | URL link for the news. |\n| urlText | string |  | Text to display for the URL. |\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"attachmentText\": \"\",\n            \"introduction\": \"This is the new news introduction\",\n            \"pageImage\": \"\",\n            \"urlText\": \"\",\n            \"dateExpiry\": \"July, 01 2023 00:00:00 +1000\",\n            \"datePublish\": \"July, 01 2021 00:00:00 +1000\",\n            \"attachment\": \"\",\n            \"url\": \"\",\n            \"introImage\": \"\",\n            \"id\": 30,\n            \"orgID\": 1,\n            \"pageBody\": \"\",\n            \"title\": \"new news\",\n            \"body\": \"\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "title": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "introduction": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "datePublish": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "dateExpiry": {
+                                                                                "type": "string"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "title",
+                                                                        "introduction",
+                                                                        "datePublish",
+                                                                        "dateExpiry"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "title": "new news",
+                                                                "introduction": "This is the new news introduction",
+                                                                "datePublish": "2021-07-01",
+                                                                "dateExpiry": "2023-07-01"
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/api/cms/saveTheme": {
+                        "post": {
+                                "summary": "Save Theme",
+                                "deprecated": false,
+                                "description": "",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "themeid": {
+                                                                                "type": "integer"
+                                                                        },
+                                                                        "css": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "js": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "libs_head": {
+                                                                                "type": "string"
+                                                                        },
+                                                                        "libs_foot": {
+                                                                                "type": "string"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "themeid",
+                                                                        "css",
+                                                                        "js",
+                                                                        "libs_head",
+                                                                        "libs_foot"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "themeid": 1,
+                                                                "css": "CSS",
+                                                                "js": "The JS",
+                                                                "libs_head": "head",
+                                                                "libs_foot": "foot"
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/ads/{adsid}": {
+                        "get": {
+                                "summary": "Get Employment Ads",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a particular ads.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"jobDescriptionPage\": \"\",\n        \"contactName\": \"asdfasdf\",\n        \"jobDescription\": \"sadfasdf\",\n        \"addressState\": \"adsfasdf\",\n        \"jobCode\": \"\",\n        \"organisation\": \"asdfasdf\",\n        \"addressCity\": \"asdfasdf\",\n        \"fax\": \"\",\n        \"sentToMembers\": \"\",\n        \"isEnabled\": 0,\n        \"datePosted\": \"June, 30 2020 00:00:00 +1000\",\n        \"attachment\": \"\",\n        \"image\": \"\",\n        \"scheduledRemoval\": \"\",\n        \"jobTitle\": \"asdfasdf\",\n        \"id\": 11,\n        \"addressCountry\": \"\",\n        \"website\": \"\",\n        \"accountDetails\": \"\",\n        \"phone\": \"asdfasdf\",\n        \"orgID\": 1,\n        \"addressPostcode\": \"asdfasdf\",\n        \"applicationClosingDate\": \"August, 20 2020 00:00:00 +1000\",\n        \"address\": \"asfasdf\",\n        \"email\": \"asd@sdf.com\"\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "adsid",
+                                                "in": "path",
+                                                "description": "ID of the ads to be retrieved.",
+                                                "required": true,
+                                                "example": "{{adsid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/ads/published/{adscount}": {
+                        "get": {
+                                "summary": "Get Published Employment Ads",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list of published ads.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"jobDescriptionPage\": \"This is the page section\\r\\n\",\n            \"contactName\": \"Jason\",\n            \"jobDescription\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\n            \"addressState\": \"vic\",\n            \"jobCode\": \"q234\",\n            \"organisation\": \"Test Succces\",\n            \"addressCity\": \"lkj\",\n            \"fax\": \"\",\n            \"sentToMembers\": \"\",\n            \"isEnabled\": 1,\n            \"datePosted\": \"July, 01 2018 00:00:00 +1000\",\n            \"attachment\": \"\",\n            \"image\": \"membes-sig-global1.png\",\n            \"scheduledRemoval\": \"\",\n            \"jobTitle\": \"asd\",\n            \"id\": 1,\n            \"addressCountry\": \"\",\n            \"website\": \"\",\n            \"accountDetails\": \"asdf\",\n            \"phone\": \"98709780987\",\n            \"orgID\": 1,\n            \"addressPostcode\": \"9870\",\n            \"applicationClosingDate\": \"July, 01 2023 00:00:00 +1000\",\n            \"address\": \"over thre\",\n            \"email\": \"adsf@asdf.com\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "adscount",
+                                                "in": "path",
+                                                "description": "Max number of ads to be retrieved.",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/ads/all/{adscount}": {
+                        "get": {
+                                "summary": "Get All Employment Ads",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves all employment ads up to the max count.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"jobDescriptionPage\": \"\",\n            \"contactName\": \"asdfasdf\",\n            \"jobDescription\": \"sadfasdf\",\n            \"addressState\": \"adsfasdf\",\n            \"jobCode\": \"\",\n            \"organisation\": \"asdfasdf\",\n            \"addressCity\": \"asdfasdf\",\n            \"fax\": \"\",\n            \"sentToMembers\": \"\",\n            \"isEnabled\": 0,\n            \"datePosted\": \"June, 30 2020 00:00:00 +1000\",\n            \"attachment\": \"\",\n            \"image\": \"\",\n            \"scheduledRemoval\": \"\",\n            \"jobTitle\": \"asdfasdf\",\n            \"id\": 11,\n            \"addressCountry\": \"\",\n            \"website\": \"\",\n            \"accountDetails\": \"\",\n            \"phone\": \"asdfasdf\",\n            \"orgID\": 1,\n            \"addressPostcode\": \"asdfasdf\",\n            \"applicationClosingDate\": \"August, 20 2020 00:00:00 +1000\",\n            \"address\": \"asfasdf\",\n            \"email\": \"asd@sdf.com\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "adscount",
+                                                "in": "path",
+                                                "description": "Max number of ads to be retrieved.",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/cpdactivitylog": {
+                        "post": {
+                                "summary": "Create CPD Activity Log",
+                                "deprecated": false,
+                                "description": "Save a list of activity logs.\n\n**BODY PARAMETERS**\n\n| Name | Type | Required | Description |\n| --- | --- | --- | --- |\n| name | string | ✔ | Name of the log. |\n| categoryID | number |  | [Get category ID](#e2277150-9802-4dc6-bfb4-4d10c47ebcc9).  <br>Obtained from \"API References\" field in membes Administration > AMS > CPD > Setup > Manage Activities. Then select the Activity type this log should be submitted to. \"API References\" can be found towards bottom. |\n| date | string |  | Activity date in dd/mm/yyyy format. |\n| profile | number | ✔ | The profile ID to associate this log. |\n| activity | array |  | [Get activity ID](#260dea6a-6b43-4901-84c1-3757aadee6c2)  <br>Obtained from \"API References\" field in membes Administration > AMS > CPD > Setup > Manage Activities. Then select the Activity type this log should be submitted to. \"API References\" can be found towards bottom. |\n| points | number |  | Points earned |\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"id\": 2294\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                                "name": {
+                                                                                        "type": "string"
+                                                                                },
+                                                                                "categoryID": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "date": {
+                                                                                        "type": "string"
+                                                                                },
+                                                                                "profile": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "activity": {
+                                                                                        "type": "array",
+                                                                                        "items": {
+                                                                                                "type": "integer"
+                                                                                        }
+                                                                                }
+                                                                        }
+                                                                }
+                                                        },
+                                                        "example": [
+                                                                {
+                                                                        "name": "api test 2",
+                                                                        "categoryID": 2,
+                                                                        "date": "01/01/2023",
+                                                                        "profile": 1596,
+                                                                        "activity": [
+                                                                                3
+                                                                        ]
+                                                                }
+                                                        ]
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        },
+                        "put": {
+                                "summary": "Update CPD Activity Log",
+                                "deprecated": false,
+                                "description": "This endpoint updates a list of existing logs.\n\n**BODY PARAMETERS**\n\nSee [Create log](#e96451e7-e093-4ab7-bb66-36a5b818acfa)\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"id\": 2288\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                                "id": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "name": {
+                                                                                        "type": "string"
+                                                                                },
+                                                                                "categoryID": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "date": {
+                                                                                        "type": "string"
+                                                                                },
+                                                                                "profile": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "hours": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "points": {
+                                                                                        "type": "integer"
+                                                                                },
+                                                                                "activity": {
+                                                                                        "type": "array",
+                                                                                        "items": {
+                                                                                                "type": "integer"
+                                                                                        }
+                                                                                }
+                                                                        }
+                                                                }
+                                                        },
+                                                        "example": [
+                                                                {
+                                                                        "id": 2288,
+                                                                        "name": "cpd activity log 3.3",
+                                                                        "categoryID": 2,
+                                                                        "date": "26/07/2021",
+                                                                        "profile": 1,
+                                                                        "hours": 10,
+                                                                        "points": 100,
+                                                                        "activity": [
+                                                                                3
+                                                                        ]
+                                                                }
+                                                        ]
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/cpdactivitylog/{profileid}": {
+                        "get": {
+                                "summary": "Get CPD Activity Log",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list of CPD logs for a particular profile.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"categoryID\": 1,\n            \"point1\": 9,\n            \"customField4\": \"\",\n            \"auditStatus\": 3,\n            \"points5\": \"\",\n            \"name\": \"Test for edit 2\",\n            \"points4\": \"\",\n            \"auditDocsReceived\": \"\",\n            \"tstamp\": \"August, 29 2017 19:25:02 +1000\",\n            \"auditDocsRequested\": \"\",\n            \"points2\": \"\",\n            \"customField3\": \"\",\n            \"points6\": \"\",\n            \"numberOfAttachments\": 0,\n            \"date\": \"August, 05 2017 00:00:00 +1000\",\n            \"reflection\": \"test1 \",\n            \"cycle_id\": 12,\n            \"customField1\": \"1234\",\n            \"point0\": 9,\n            \"attachment2\": \"\",\n            \"customField6\": \"\",\n            \"customField5\": \"\",\n            \"customField2\": \"\",\n            \"points3\": \"\",\n            \"attachment1\": \"logo-invoice.jpg\",\n            \"activity_id\": 3,\n            \"id\": 2143,\n            \"attachment3\": \"\",\n            \"event_id\": \"\",\n            \"pendingAudit\": 0\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "The CPD log for this profile will be retrieved.",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/cpdactivitylog/activities": {
+                        "get": {
+                                "summary": "Get Available CPD Activities",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list available CPD activities.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"canSubmitOnline\": 1,\n            \"minPoints3\": 0,\n            \"points\": \"10\",\n            \"categoryID\": 1,\n            \"capPoints2\": \"\",\n            \"min\": 0,\n            \"requiresAudit\": 0,\n            \"capPoints6\": \"\",\n            \"capPoints3\": \"\",\n            \"capHours\": \"\",\n            \"code\": \"E-T1\",\n            \"cap\": 50,\n            \"capPoints4\": \"\",\n            \"id\": 3,\n            \"minHours\": 0,\n            \"orgID\": 1,\n            \"capPoints5\": \"\",\n            \"title\": \"Test One\",\n            \"minPoints5\": 0,\n            \"minPoints4\": 0,\n            \"minPoints2\": 0,\n            \"minPoints6\": 0,\n            \"explanation\": \"Test\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/cpdactivitylog/categories": {
+                        "get": {
+                                "summary": "Get a list of CPD categories",
+                                "deprecated": false,
+                                "description": "This endpoint retrieves a list of CPD categories available.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"referenceID\": 1,\n            \"orgID\": 0,\n            \"description\": \"Endorsed\"\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/cpdactivitylog/{profileid}/{logid}": {
+                        "delete": {
+                                "summary": "Delete a CPD Activity Log",
+                                "deprecated": false,
+                                "description": "This endpoint delete a log.",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "profileid",
+                                                "in": "path",
+                                                "description": "Profile ID whose log is to be deleted",
+                                                "required": true,
+                                                "example": "{{profileid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "logid",
+                                                "in": "path",
+                                                "description": "Log ID to delete.",
+                                                "required": true,
+                                                "example": "{{logid}}",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/lookup/{type}/list": {
+                        "get": {
+                                "summary": "Get a list of Countries or States",
+                                "deprecated": false,
+                                "description": "Get a list of countries or states with the id to be used in profile create and update.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"name\": \"--\",\n            \"country_id\": 0\n        },\n        {\n            \"name\": \"Afghanistan\",\n            \"country_id\": 4\n        },\n        {\n            \"name\": \"Albania\",\n            \"country_id\": 8\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "type",
+                                                "in": "path",
+                                                "description": "Acceptable values are 'Countries' or 'States'",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/webhook/list": {
+                        "get": {
+                                "summary": "get a list of webhook",
+                                "deprecated": false,
+                                "description": "Get a list of urls registered as webhook.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": [\n        {\n            \"webHook\": \"https://webhook.site/8d2323b7-5738-4ed9-9f59-fee4046951ce?num={{{profileNumber}}}&id={{{id}}}&email={{{email}}}&email2={{{email2}}}&name={{{name}}}&surname={{{surname}}}\",\n            \"id\": 18,\n            \"type\": \"profile_create\",\n            \"orgID\": 1\n        },\n        {\n            \"webHook\": \"https://webhook.site/8d2323b7-5738-4ed9-9f59-fee4046951ce?num={{{profileNumber}}}&id={{{id}}}&email={{{email}}}&email2={{{email2}}}&name={{{name}}}&surname={{{surname}}}\",\n            \"id\": 19,\n            \"type\": \"profile_create\",\n            \"orgID\": 1\n        },\n        {\n            \"webHook\": \"https://webhook.site/8d2323b7-5738-4ed9-9f59-fee4046951ce?num={{{profileNumber}}}&id={{{id}}}&email={{{email}}}&email2={{{email2}}}&name={{{name}}}&surname={{{surname}}}\",\n            \"id\": 23,\n            \"type\": \"profile_update\",\n            \"orgID\": 1\n        },\n        {\n            \"webHook\": \"https://webhook.site/8d2323b7-5738-4ed9-9f59-fee4046951ce?num={{{profileNumber}}}&id={{{id}}}&email={{{email}}}&email2={{{email2}}}&name={{{name}}}&surname={{{surname}}}\",\n            \"id\": 25,\n            \"type\": \"profile_update\",\n            \"orgID\": 1\n        }\n    ],\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/webhook/subscribe/{type}": {
+                        "post": {
+                                "summary": "subscribe to a webhook",
+                                "deprecated": false,
+                                "description": "Subscribe to a webhook\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {\n        \"webHook\": \"https://your-webhook-url-sample.com\",\n        \"id\": 27,\n        \"type\": \"profile_update\",\n        \"orgID\": 1\n    },\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "type",
+                                                "in": "path",
+                                                "description": "Acceptable values are 'profile_update' or 'profile_create'",
+                                                "required": true,
+                                                "example": "profile_update",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "hookUrl": {
+                                                                                "type": "string"
+                                                                        }
+                                                                },
+                                                                "required": [
+                                                                        "hookUrl"
+                                                                ]
+                                                        },
+                                                        "example": {
+                                                                "hookUrl": "https://your-webhook-url-sample.com"
+                                                        }
+                                                }
+                                        }
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/webhook/unsubscribe/{id}/": {
+                        "post": {
+                                "summary": "unsubscribe from a webhook",
+                                "deprecated": false,
+                                "description": "Unsubscribe from a webhook.\n\n**RESPONSES**\n\n``` json\n{\n    \"data\": {},\n    \"error\": false,\n    \"messages\": []\n}\n\n ```",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "id",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "27",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": []
+                        }
+                },
+                "/batch/profiles/2025-02-03 12:12:12": {
+                        "get": {
+                                "summary": "profiles",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "limit",
+                                                "in": "query",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "1",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/batch/profile_interactions/{last_updated}": {
+                        "get": {
+                                "summary": "profile_interactions",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "last_updated",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "2025-02-03 12:12:12",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "limit",
+                                                "in": "query",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "10",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/batch/news/{last_updated}": {
+                        "get": {
+                                "summary": "news",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "last_updated",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "2025-02-03 12:12:12",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "limit",
+                                                "in": "query",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "1",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/batch/invoices/{last_updated}": {
+                        "get": {
+                                "summary": "invoices",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "last_updated",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "2025-02-03 12:12:12",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "limit",
+                                                "in": "query",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "1",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/list/profile_interaction_types/{interaction_type_id}": {
+                        "get": {
+                                "summary": "profile_interaction_types",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "interaction_type_id",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/list/states/{state_id}": {
+                        "get": {
+                                "summary": "get list of states",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "state_id",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                },
+                "/list/countries/{country_id}": {
+                        "get": {
+                                "summary": "get list of countries",
+                                "deprecated": false,
+                                "description": "Get a profile's detail.\n\n**RESPONSES**\n\n| **Name** | **Type** | **Description** |\n| --- | --- | --- |\n| groups | array | Array of group elements that the profile is in. Each element contains the group ID and label |\n| customfields | array | Array of custom field elements. Each element contains the custom field id, label, and value. |\n| address | array | Array of addresses. |\n| profile | object | \\- profilenumber  <br>\\- membershipStatus  <br>\\- informalName  <br>\\- membershipStatusID  <br>\\- previousName  <br>\\- typeID  <br>\\- membershipTypeID  <br>\\- membershipType  <br>\\- surname  <br>\\- dob  <br>\\- companyName  <br>\\- firstName  <br>\\- id  <br>\\- middleName  <br>\\- membershippaidthrough  <br>\\- email  <br>\\- joinDate  <br>\\- faxCountryCode  <br>\\- fax  <br>\\- phoneHomeCountryCode  <br>\\- phoneHome  <br>\\- phoneWorkCountryCode  <br>\\- phoneWork  <br>\\- phoneMobileCountryCode  <br>\\- phoneMobile |",
+                                "tags": [],
+                                "parameters": [
+                                        {
+                                                "name": "country_id",
+                                                "in": "path",
+                                                "description": "",
+                                                "required": true,
+                                                "example": "",
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "properties": {}
+                                                                }
+                                                        }
+                                                },
+                                                "headers": {}
+                                        }
+                                },
+                                "security": [
+                                        {
+                                                "bearer": []
+                                        }
+                                ]
+                        }
+                }
+        },
+        "components": {
+                "schemas": {},
+                "securitySchemes": {
+                        "bearer": {
+                                "type": "http",
+                                "scheme": "bearer"
+                        }
+                }
+        },
+        "servers": [],
+        "security": []
+}
