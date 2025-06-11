@@ -17,6 +17,8 @@
           
           {
             "group": "API Reference",
+            "openapi": "openapi.json",
+            
             "pages": [
               "api-reference/introduction",
                 {
