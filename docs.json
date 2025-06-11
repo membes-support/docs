@@ -17,14 +17,12 @@
           
           {
             "group": "API Reference",
-            "openapi": "openapi.json",
-            
             "pages": [
               "api-reference/introduction",
                 {
                   "group": "Batch",
                   "pages": [
-                    "batchEndpoints/getProfile",
+                    "batchEndpoints/getProfile"
                 ]
               }
             ]
