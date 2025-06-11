@@ -1,8 +1,8 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "membes",
-  "name": "Membes Developer Documentation
-",
+  "theme": "mint",
+  "name": "Membes Developer Documentation",
+
   "colors": {
     "primary": "#335eea",
     "light": "#8094DD",
@@ -55,26 +55,8 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
+    
   },
   "logo": {
     "light": "/logo/light.svg",
