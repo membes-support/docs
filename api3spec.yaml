@@ -1,0 +1,414 @@
+openapi: 3.0.3
+info:
+  title: Membes API
+  version: 1.0.0
+  description: OpenAPI specification generated from ColdBox routes.cfm
+
+servers:
+  - url: http://localhost:3000/api/v1
+
+paths:
+  /profile/search:
+    post:
+      summary: Search profiles
+      responses:
+        '200':
+          description: Success
+
+  /profile/{profileID}/interaction/{typeID}:
+    post:
+      summary: Get profile interaction
+      parameters:
+        - name: profileID
+          in: path
+          required: true
+          schema: { type: integer }
+        - name: typeID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /profile/{profileID}/interaction:
+    post:
+      summary: Add profile interaction
+      parameters:
+        - name: profileID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /profile/{profileID}/events:
+    get:
+      summary: Get calendar events for profile
+      parameters:
+        - name: profileID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /profile/{profileID}:
+    get:
+      summary: View profile
+      parameters:
+        - name: profileID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+    post:
+      summary: Add profile
+      parameters:
+        - name: profileID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+    put:
+      summary: Update profile
+      parameters:
+        - name: profileID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /eventsbydaterange/{dateStart}/{dateEnd}:
+    get:
+      summary: Get events by date range
+      parameters:
+        - name: dateStart
+          in: path
+          required: false
+          schema: { type: string }
+        - name: dateEnd
+          in: path
+          required: false
+          schema: { type: string }
+      responses:
+        '200':
+          description: Success
+
+  /events/{eventID}:
+    get:
+      summary: View event
+      parameters:
+        - name: eventID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /forum/{topicID}/reply:
+    get:
+      summary: View forum reply
+      parameters:
+        - name: topicID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+    post:
+      summary: Add forum reply
+      parameters:
+        - name: topicID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /forum/{topicID}:
+    get:
+      summary: View forum topic
+      parameters:
+        - name: topicID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+    post:
+      summary: Add forum topic
+      parameters:
+        - name: topicID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /forumcategories:
+    get:
+      summary: Get forum categories
+      responses:
+        '200':
+          description: Success
+
+  /news/all/{maxRecords}:
+    get:
+      summary: Get all news
+      parameters:
+        - name: maxRecords
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /news/published/{maxRecords}:
+    get:
+      summary: Get published news
+      parameters:
+        - name: maxRecords
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /news/{itemID}:
+    get:
+      summary: View news item
+      parameters:
+        - name: itemID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+    post:
+      summary: Add or update news item
+      parameters:
+        - name: itemID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /ads/all/{maxRecords}:
+    get:
+      summary: Get all ads
+      parameters:
+        - name: maxRecords
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /ads/published/{maxRecords}:
+    get:
+      summary: Get published ads
+      parameters:
+        - name: maxRecords
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /ads/{adsID}:
+    get:
+      summary: View ad
+      parameters:
+        - name: adsID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /groups/events/{groupID}:
+    get:
+      summary: Get events by group
+      parameters:
+        - name: groupID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /groups/topics/{groupID}:
+    get:
+      summary: Get forum topics by group
+      parameters:
+        - name: groupID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /groups/replies/{groupID}/{topicID}:
+    get:
+      summary: Get topic replies by group
+      parameters:
+        - name: groupID
+          in: path
+          required: true
+          schema: { type: integer }
+        - name: topicID
+          in: path
+          required: false
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /cpdactivitylog/activities:
+    get:
+      summary: Get CPD activities
+      responses:
+        '200':
+          description: Success
+
+  /cpdactivitylog/categories:
+    get:
+      summary: Get CPD categories
+      responses:
+        '200':
+          description: Success
+
+  /cpdactivitylog/{profileID}/{logid}:
+    delete:
+      summary: Delete CPD activity log
+      parameters:
+        - name: profileID
+          in: path
+          required: true
+          schema: { type: integer }
+        - name: logid
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204':
+          description: Deleted
+
+  /cpdactivitylog/{profileID}:
+    get:
+      summary: View CPD activity log
+      parameters:
+        - name: profileID
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /cpdactivitylog/:
+    put:
+      summary: Add or update CPD activity log
+      responses:
+        '200':
+          description: Success
+    post:
+      summary: Add or update CPD activity log
+      responses:
+        '200':
+          description: Success
+
+  /token/validate/{token}:
+    get:
+      summary: Validate token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Success
+
+  /lookup/{type}/list:
+    get:
+      summary: Lookup list
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Success
+
+  /webhook/subscribe/{type}:
+    post:
+      summary: Subscribe to webhook
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Success
+
+  /webhook/unsubscribe/{id}:
+    post:
+      summary: Unsubscribe from webhook
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Success
+
+  /webhook/list:
+    get:
+      summary: List webhooks
+      responses:
+        '200':
+          description: Success
+
+  /webhook/gethistory/:
+    post:
+      summary: Get webhook history
+      responses:
+        '200':
+          description: Success
+
+  /webhook/getsamplewebhook/:
+    get:
+      summary: Get sample webhook
+      responses:
+        '200':
+          description: Success
+
+components: {}
