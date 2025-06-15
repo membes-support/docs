@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Membes API
+  title: Members API
   version: 1.0.0
   description: OpenAPI specification generated from ColdBox routes.cfm
 
@@ -61,7 +61,7 @@ paths:
       parameters:
         - name: profileID
           in: path
-          required: false
+          required: true
           schema: { type: integer }
       responses:
         '200':
@@ -310,7 +310,7 @@ paths:
           in: path
           required: true
           schema: { type: integer }
-        - name: logid
+        - name: logId
           in: path
           required: true
           schema: { type: integer }
